@@ -16,13 +16,13 @@ A discord bot made with the discord.py library
 
 ### I will keep adding them and these will be the goal for features that i'll add!
 
-- [] Moderation 
-- [] XP System
-- [] Database
-- [] Dashboard
-- [] Economy system
-- [] Fun commands
-- [] Server Management
+- [ ] Moderation 
+- [ ] XP System
+- [ ] Database
+- [ ] Dashboard
+- [ ] Economy system
+- [ ] Fun commands
+- [ ] Server Management
 
 # Support, Documention
 
