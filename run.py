@@ -1,6 +1,7 @@
 import logging
+import sys
 import os
-from bot import PalmtrwwPy
+from lib.bot import PalmtrwwPy
 from sys import stdout
 from dotenv import load_dotenv
 from non_blocking_file_handler import NonBlockingFileHandler

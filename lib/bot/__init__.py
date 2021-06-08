@@ -3,25 +3,35 @@ import logging
 import os
 import aiosqlite
 from discord.ext import commands
+from discord.ext.commands import when_mentioned_or
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from glob import glob
+from ..db import db
+from pretty_help import DefaultMenu, PrettyHelp
+
+
+menu = DefaultMenu(page_left="⬅️", page_right="➡️", remove="❌", active_time=100)
+ending_note = "The ending note from {ctx.bot.user.name}\nFor command {help.clean_prefix}{help.invoked_with}"
+
 
 logger = logging.getLogger(__name__)
 console_logger = logging.getLogger("console")
+
+
 
 
 class PalmtrwwPy(commands.Bot):
     def __init__(self):
         self.ready = False
         self.scheduler = AsyncIOScheduler()
-        self.COGS = [path.split(os.sep)[-1][:-3] for path in glob("./palmtrwwpy/cogs/*.py")]
+        self.COGS = [path.split(os.sep)[-1][:-3] for path in glob("./lib/cogs/*.py")]
         
-
-        super().__init__(command_prefix="p.", chunk_guilds_at_startup=True, case_sensitive=True, intents=discord.Intents.all())
+        db.autosave(self.scheduler)
+        super().__init__(command_prefix=["p!", "p."], chunk_guilds_at_startup=True, case_sensitive=True, intents=discord.Intents.all(), help_command = PrettyHelp(menu=menu, ending_note=ending_note))
 
     def setup(self):
         for cog in self.COGS:
-            self.load_extension(f"cogs.{cog}")
+            self.load_extension(f"lib.cogs.{cog}")
             print(f"[COGS] {cog} cog loaded!")
 
         
@@ -35,6 +45,7 @@ class PalmtrwwPy(commands.Bot):
         )
 
         if not self.ready:
+            self.scheduler.start()
             await self.on_first_ready()
             self.ready = True
             

@@ -18,9 +18,9 @@ A discord bot made with the discord.py library
 
 - [ ] Moderation 
 - [ ] XP System
-- [ ] Database
+- [x] Database
 - [ ] Dashboard
-- [ ] Economy system
+- [x] Economy system
 - [ ] Fun commands
 - [ ] Server Management
 

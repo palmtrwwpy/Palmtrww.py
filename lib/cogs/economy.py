@@ -61,11 +61,11 @@ def remove_bal(user: discord.Member, amount: int):
     cursor.close()
     db.close() 
 
-class Economy(commands.Cog):
+class Economy(commands.Cog, description="Economy commands!"):
     def __init__(self, client):
         self.client = client
 
-    @commands.command(name="bal", aliases=['balance'])
+    @commands.command(name="bal", aliases=['balance'], brief="Shows the balnce of a user or yourself!")
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def balance(self, ctx, member: discord.Member=None):
         if member == None:
@@ -94,7 +94,7 @@ class Economy(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    @commands.command(name="beg")
+    @commands.command(name="beg", breif="Begs for money and gives a random amount to your balance")
     async def beg(self, ctx):
         open_account(user=ctx.author)
         possibility = random.randint(1, 5)
@@ -114,7 +114,7 @@ class Economy(commands.Cog):
         add_bal(ctx.author, amount)
         await ctx.send(random.choice(outcomes))
 
-    @commands.command(name="dep", aliases=['deposit'])
+    @commands.command(name="dep", aliases=['deposit'], breif="Deposits a amount of money into your bank")
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def dep(self, ctx, amount):
         open_account(user=ctx.author)
@@ -159,8 +159,8 @@ class Economy(commands.Cog):
         cursor.close()
         db.close()
 
-    @commands.command(name='gamble')
-    @commands.cooldown(1, 60, commands.BucketType.user)
+    @commands.command(name='gamble', breif="Gambles a amount of money")
+    @commands.cooldown(1, 10, commands.BucketType.user)
     async def gamble(self, ctx, amount):
         open_account(user=ctx.author)
         try:
@@ -195,7 +195,7 @@ class Economy(commands.Cog):
         add_bal(ctx.author, total_wallet)
         await ctx.send(f"You won {total_wallet}!")
 
-    @commands.command(name="with", aliases=['withdraw'])
+    @commands.command(name="with", aliases=['withdraw'], breif="Withdraws a amount of money from your bank")
     async def withdraw(self, ctx, amount: str):
         open_account(user=ctx.author)
         db = sqlite3.connect('./data/bank.sqlite')
@@ -244,7 +244,7 @@ class Economy(commands.Cog):
         cursor.close()
         db.close()
 
-    @commands.command(name='work')
+    @commands.command(name='work', brief='Works from a random job for money')
     @commands.cooldown(1, 3600, commands.BucketType.user)
     async def work(self, ctx):
         open_account(user=ctx.author)
@@ -280,7 +280,7 @@ class Economy(commands.Cog):
         except ValueError:
             return networths
 
-    @commands.command(name="leaderboard", aliases=['lb', 'rich'])
+    @commands.command(name="leaderboard", aliases=['lb', 'rich'], breif="Shows you the top users of your guild!")
     @commands.cooldown(1, 3, commands.BucketType.user)
     async def lb(self, ctx):
         open_account(user=ctx.author)
