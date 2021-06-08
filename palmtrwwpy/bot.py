@@ -1,25 +1,30 @@
 import discord
 import logging
+import os
+import aiosqlite
 from discord.ext import commands
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from pathlib import Path
+from glob import glob
 
 logger = logging.getLogger(__name__)
 console_logger = logging.getLogger("console")
+
 
 class PalmtrwwPy(commands.Bot):
     def __init__(self):
         self.ready = False
         self.scheduler = AsyncIOScheduler()
+        self.COGS = [path.split(os.sep)[-1][:-3] for path in glob("./palmtrwwpy/cogs/*.py")]
         
 
         super().__init__(command_prefix="p.", chunk_guilds_at_startup=True, case_sensitive=True, intents=discord.Intents.all())
 
     def setup(self):
-        for cog in Path("bot/cogs").glob("*.py"):
-            cogpath = f"bot.cogs.{cog}"
-            self.load_extension(cogpath)
-            console_logger.info(f"Loaded {cogpath}")
+        for cog in self.COGS:
+            self.load_extension(f"cogs.{cog}")
+            print(f"[COGS] {cog} cog loaded!")
+
+        
 
 
     async def on_ready(self):
@@ -32,6 +37,8 @@ class PalmtrwwPy(commands.Bot):
         if not self.ready:
             await self.on_first_ready()
             self.ready = True
+            
+            
 
     async def on_first_ready(self):
         self.setup()
