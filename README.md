@@ -23,6 +23,7 @@ A discord bot made with the discord.py library
 - [x] Economy system
 - [ ] Fun commands
 - [ ] Server Management
+- [x] Music
 
 # Support, Documention
 
